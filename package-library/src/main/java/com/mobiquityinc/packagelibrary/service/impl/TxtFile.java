@@ -1,6 +1,7 @@
 package com.mobiquityinc.packagelibrary.service.impl;
 
 import com.mobiquityinc.packagelibrary.exception.APIException;
+import com.mobiquityinc.packagelibrary.model.ErrorCode;
 import com.mobiquityinc.packagelibrary.service.File;
 
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class TxtFile implements File {
             reader.close();
             return lines;
         } catch (IOException e){
-            throw new APIException("File not found", e);
+            throw new APIException(ErrorCode.FILE_NOT_FOUND.getValue(), e);
         }
     }
 }

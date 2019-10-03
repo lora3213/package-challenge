@@ -1,6 +1,7 @@
 package com.mobiquityinc.packagelibrary.service.impl;
 
 import com.mobiquityinc.packagelibrary.exception.APIException;
+import com.mobiquityinc.packagelibrary.model.ErrorCode;
 import com.mobiquityinc.packagelibrary.model.Item;
 import com.mobiquityinc.packagelibrary.model.Package;
 import com.mobiquityinc.packagelibrary.service.Transform;
@@ -83,7 +84,7 @@ public class PackageTransform  implements Transform {
         temporalPackage.setItem(temporalItems);
         
         if ((temporalPackage.getItem().size() > Integer.parseInt(this.maxOfItemsPerPackage))){
-            throw new APIException("number of items exceed the maximum, please check", new Exception());
+            throw new APIException(ErrorCode.NUMBER_OF_ITEMS_EXCEED.getValue(), new Exception());
         }
         
         return temporalPackage;
