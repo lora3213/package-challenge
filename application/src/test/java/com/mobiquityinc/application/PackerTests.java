@@ -34,7 +34,7 @@ public class PackerTests {
     }
     
     @Test
-    public void packTestIntegration() throws APIException {
+    public void packerIntegrationTest() throws APIException {
         String result = this.service.pack(this.filePath);
         assertEquals(result, resultExpected);
     }
