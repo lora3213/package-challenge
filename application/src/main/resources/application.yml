@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: APPLICATION
+constraints:
+  maxWeightPackage: 100
+  maxWeightItem: 100
+  maxCostItem: 100
