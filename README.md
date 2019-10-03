@@ -2,7 +2,7 @@
 
 ### Porpuse
 The idea was solve the package challenge giving a scalable, cohesive and not acopled solution, with new frameworks and 
-best practices, please see through the code and the commentarys 
+best practices, please see through the code and the commentaries
 
 #### Technologies
 
