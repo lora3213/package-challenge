@@ -11,12 +11,13 @@ best practices, please see through the code and the commentaries
 * Lombok
 * Maven
 
-#### Design
+#### Recomendations
+Please download lombok pluging in your IDE for not have troubles with lombok dependency usage
 
+#### Design
 Based in Domain Driven Design
 
 #### Architecture
-
 Would be oriented to a microservices architecture
 
 
