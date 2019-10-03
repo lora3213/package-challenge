@@ -16,7 +16,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PackageCombination implements Serializable {
+public class ItemCombination implements Serializable {
     
     private static final long serialVersionUID = 1L;
     

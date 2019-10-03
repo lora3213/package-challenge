@@ -1,7 +1,7 @@
 package com.mobiquityinc.packagelibrary.service.impl;
 
 import com.mobiquityinc.packagelibrary.model.Package;
-import com.mobiquityinc.packagelibrary.model.PackageCombination;
+import com.mobiquityinc.packagelibrary.model.ItemCombination;
 import com.mobiquityinc.packagelibrary.service.Decision;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,8 @@ import java.util.List;
 @Service
 public class PackageDecision implements Decision {
     
-    private List<PackageCombination> packageCombinations;
+    private List<ItemCombination> itemCombinations;
+    
     
     /**
      * @param aPackage
@@ -26,64 +27,59 @@ public class PackageDecision implements Decision {
     @Override
     public String fillBestChoiceforPackages(Package aPackage){
         
-        packageCombinations = new ArrayList<PackageCombination>();
+        itemCombinations = new ArrayList<ItemCombination>();
         
         for (int idx=0; idx < aPackage.getItem().size(); idx++){
-            PackageCombination aloneCombination = new PackageCombination();
-            aloneCombination.setIndexes(aPackage.getItem().get(idx).getIndex() + "");
-            aloneCombination.setSumWeight(aPackage.getItem().get(idx).getWeight());
-            aloneCombination.setSumCost(aPackage.getItem().get(idx).getCost());
-            this.compareWithAllCombinations(aloneCombination, aPackage);
+            ItemCombination singleCombination = new ItemCombination();
+            singleCombination.setIndexes(aPackage.getItem().get(idx).getIndex() + "");
+            singleCombination.setSumWeight(aPackage.getItem().get(idx).getWeight());
+            singleCombination.setSumCost(aPackage.getItem().get(idx).getCost());
+            this.getBestChoiceInAllCombinations(singleCombination, aPackage);
             
             for (int idy= idx + 1; idy < aPackage.getItem().size() ;idy++){
-                int packageCombinationBeforeItemIntern = packageCombinations.size() -1;
-                PackageCombination combination = new PackageCombination();
-    
-                String nextIndexItem = aPackage.getItem().get(idy).getIndex() + "";
-                double nextWeightItem = aPackage.getItem().get(idy).getWeight();
-                double nextCostItem = aPackage.getItem().get(idx).getCost();
-
-                String actualIndexCombination = packageCombinations.get(packageCombinationBeforeItemIntern).getIndexes();
-                double actualtWeighCombination = packageCombinations.get(packageCombinationBeforeItemIntern).getSumWeight();
-                double actualCostItemCombination = packageCombinations.get(packageCombinationBeforeItemIntern).getSumCost();
+                int previousItemCombination = itemCombinations.size() -1;
+                ItemCombination itemCombination = new ItemCombination();
                 
-                String sumOfIndexes = actualIndexCombination + "," + nextIndexItem;
-                double sumOfWeights = actualtWeighCombination + nextWeightItem;
-                double sumOfCosts = actualCostItemCombination + nextCostItem;
+                String sumOfIndexes = itemCombinations.get(previousItemCombination).getIndexes() + "," +
+                        aPackage.getItem().get(idy).getIndex();
+                double sumOfWeights = itemCombinations.get(previousItemCombination).getSumWeight() +
+                        aPackage.getItem().get(idy).getWeight();
+                double sumOfCosts = itemCombinations.get(previousItemCombination).getSumCost() +
+                        aPackage.getItem().get(idx).getCost();
     
-                combination.setIndexes(sumOfIndexes);
-                combination.setSumWeight(sumOfWeights);
-                combination.setSumCost(sumOfCosts);
+                itemCombination.setIndexes(sumOfIndexes);
+                itemCombination.setSumWeight(sumOfWeights);
+                itemCombination.setSumCost(sumOfCosts);
     
-                this.compareWithAllCombinations(combination, aPackage);
+                this.getBestChoiceInAllCombinations(itemCombination, aPackage);
             }
         }
         return this.getIndexesOfBestChoice();
     }
     
     /**
-     * @param packageCombinationItem
+     * @param itemCombinationEvaluate
      * @param aPackage
      */
-    private void compareWithAllCombinations(PackageCombination packageCombinationItem, Package aPackage){
+    private void getBestChoiceInAllCombinations(ItemCombination itemCombinationEvaluate, Package aPackage){
         
-        if (packageCombinationItem.getSumWeight() < aPackage.getWightLimit()){
-            if (this.packageCombinations.size() == 0){
-                packageCombinationItem.setBestChoice(true);
+        if (itemCombinationEvaluate.getSumWeight() < aPackage.getWightLimit()){
+            if (this.itemCombinations.size() == 0){
+                itemCombinationEvaluate.setBestChoice(true);
             }
         } else {
-            packageCombinationItem.setBestChoice(false);
+            itemCombinationEvaluate.setBestChoice(false);
         }
         
-        if (packageCombinationItem.getSumWeight() < aPackage.getWightLimit() && this.packageCombinations.size() > 0){
-            for (int idx= 0; idx < this.packageCombinations.size(); idx++) {
-                if (packageCombinationItem.getSumCost() > this.packageCombinations.get(idx).getSumCost()){
-                    packageCombinationItem.setBestChoice(true);
-                    this.packageCombinations.get(idx).setBestChoice(false);
+        if (itemCombinationEvaluate.getSumWeight() < aPackage.getWightLimit() && this.itemCombinations.size() > 0){
+            for (int idx = 0; idx < this.itemCombinations.size(); idx++) {
+                if (itemCombinationEvaluate.getSumCost() > this.itemCombinations.get(idx).getSumCost()){
+                    itemCombinationEvaluate.setBestChoice(true);
+                    this.itemCombinations.get(idx).setBestChoice(false);
                 }
             }
         }
-        this.packageCombinations.add(packageCombinationItem);
+        this.itemCombinations.add(itemCombinationEvaluate);
     }
     
     /**
@@ -93,9 +89,9 @@ public class PackageDecision implements Decision {
         
         String indexesRsult = "-";
         
-        for (PackageCombination packageCombinationItem : this.packageCombinations){
-            if (packageCombinationItem.isBestChoice()){
-                indexesRsult = packageCombinationItem.getIndexes();
+        for (ItemCombination itemCombinationItem : this.itemCombinations){
+            if (itemCombinationItem.isBestChoice()){
+                indexesRsult = itemCombinationItem.getIndexes();
                 break;
             }
         }
