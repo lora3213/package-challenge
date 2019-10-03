@@ -1,6 +1,7 @@
 package com.mobiquityinc.packagelibrary.service.impl;
 
 import com.mobiquityinc.packagelibrary.exception.APIException;
+import com.mobiquityinc.packagelibrary.model.Character;
 import com.mobiquityinc.packagelibrary.model.ErrorCode;
 import com.mobiquityinc.packagelibrary.model.Item;
 import com.mobiquityinc.packagelibrary.model.Package;
@@ -48,7 +49,7 @@ public class PackageTransform  implements Transform {
         temporalPackage.setWightLimit(Double.parseDouble(itemsOfline.get(0)));
         
         if (temporalPackage.getWightLimit() > Double.parseDouble(maxWeightPackage)){
-            temporalPackage.setBestChoice("-");
+            temporalPackage.setBestChoice(Character.IDENTIFIER_OF_NOT_ITEM_FOUND.getValue());
         }
         
         itemsOfline.remove(0);
@@ -58,22 +59,22 @@ public class PackageTransform  implements Transform {
         
         for (String item : itemsOfline){
             Item itemPackage = new Item();
-            for (String field : item.split(",")){
+            for (String field : item.split(Character.ITEM_SEPARATOR.getValue())){
                 if (field.contains("(")){
                     field = field.replace("(","");
                     itemPackage.setIndex(Integer.parseInt(field));
                 } else if (field.contains(")")){
                     field = field.replace(")","");
-                    field = field.replace("€","");
+                    field = field.replace(Character.EURO_CURRENCY.getValue(),"");
                     double cost = Double.parseDouble(field);
                     if (cost > Double.parseDouble(maxCostItem)){
-                        temporalPackage.setBestChoice("-");
+                        temporalPackage.setBestChoice(Character.IDENTIFIER_OF_NOT_ITEM_FOUND.getValue());
                     }
                     itemPackage.setCost(cost);
                 } else {
                     double weight = Double.parseDouble(field);
                     if (weight > Double.parseDouble(maxWeightItem)){
-                        temporalPackage.setBestChoice("-");
+                        temporalPackage.setBestChoice(Character.IDENTIFIER_OF_NOT_ITEM_FOUND.getValue());
                     }
                     itemPackage.setWeight(weight);
                 }

@@ -1,5 +1,6 @@
 package com.mobiquityinc.packagelibrary.service.impl;
 
+import com.mobiquityinc.packagelibrary.model.Character;
 import com.mobiquityinc.packagelibrary.model.Package;
 import com.mobiquityinc.packagelibrary.model.ItemCombination;
 import com.mobiquityinc.packagelibrary.service.Decision;
@@ -40,8 +41,8 @@ public class PackageDecision implements Decision {
                 int previousItemCombination = itemCombinations.size() -1;
                 ItemCombination itemCombination = new ItemCombination();
                 
-                String sumOfIndexes = itemCombinations.get(previousItemCombination).getIndexes() + "," +
-                        aPackage.getItem().get(idy).getIndex();
+                String sumOfIndexes = itemCombinations.get(previousItemCombination).getIndexes() +
+                        Character.ITEM_SEPARATOR.getValue() + aPackage.getItem().get(idy).getIndex();
                 double sumOfWeights = itemCombinations.get(previousItemCombination).getSumWeight() +
                         aPackage.getItem().get(idy).getWeight();
                 double sumOfCosts = itemCombinations.get(previousItemCombination).getSumCost() +
@@ -87,7 +88,7 @@ public class PackageDecision implements Decision {
      */
     private String getIndexesOfBestChoice(){
         
-        String indexesRsult = "-";
+        String indexesRsult = Character.IDENTIFIER_OF_NOT_ITEM_FOUND.getValue();
         
         for (ItemCombination itemCombinationItem : this.itemCombinations){
             if (itemCombinationItem.isBestChoice()){
