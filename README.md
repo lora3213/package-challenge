@@ -12,7 +12,7 @@ best practices, please see through the code and the commentaries
 * Maven
 
 #### Recomendations
-Please download lombok pluging in your IDE for not have troubles with lombok dependency usage
+Please download lombok plugin in your IDE for not have troubles with lombok dependency usage
 
 #### Design
 Based in Domain Driven Design
