@@ -9,7 +9,7 @@ package com.mobiquityinc.packagelibrary.model;
 public enum ErrorCode {
 
     FILE_NOT_FOUND("EC-01 - File not found"),
-    NUMBER_OF_ITEMS_EXCEED("EC-02 - Number of items exceed the maximumk");
+    NUMBER_OF_ITEMS_EXCEED("EC-02 - Number of items exceed the maximum");
 
     private final String value;
 
