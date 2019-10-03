@@ -18,7 +18,7 @@ public class Application {
 		
 		try {
 			if (args.length > 0){
-				service.pack(args[0]);
+				System.out.println(service.pack(args[0]));
 			}
 		} catch (APIException e) {
 			e.printStackTrace();

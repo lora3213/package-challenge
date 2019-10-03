@@ -4,5 +4,6 @@ import com.mobiquityinc.packagelibrary.model.Package;
 
 public interface Decision {
     
-    void fillBestChoiceforPackages(Package aPackage);
+    String fillBestChoiceforPackages(Package aPackage);
+    
 }

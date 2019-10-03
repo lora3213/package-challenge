@@ -33,10 +33,15 @@ public class Packer {
         }
         
         for (Package aPackage : this.packages){
-            this.packageDecision.fillBestChoiceforPackages(aPackage);
+            aPackage.setBestChoice(this.packageDecision.fillBestChoiceforPackages(aPackage));
         }
         
-        return "";
+        String concatResults = "";
+        for (Package aPackage : this.packages){
+            concatResults = concatResults + aPackage.getBestChoice() + "\n";
+        }
+        
+        return concatResults;
     }
     
 }
