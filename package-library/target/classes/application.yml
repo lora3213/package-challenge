@@ -1,4 +1,5 @@
 constraints:
+  maxOfItemsPerPackage: 15
   maxWeightPackage: 100
   maxWeightItem: 100
   maxCostItem: 100

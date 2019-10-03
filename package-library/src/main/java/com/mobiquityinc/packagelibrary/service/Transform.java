@@ -1,5 +1,6 @@
 package com.mobiquityinc.packagelibrary.service;
 
+import com.mobiquityinc.packagelibrary.exception.APIException;
 import com.mobiquityinc.packagelibrary.model.Package;
 
 /**
@@ -14,5 +15,5 @@ public interface Transform {
      * @param fileLines
      * @return
      */
-    Package transformLineFileToPackage(String fileLines);
+    Package transformLineFileToPackage(String fileLines) throws APIException;
 }

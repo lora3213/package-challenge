@@ -1,5 +1,6 @@
 package com.mobiquityinc.packagelibrary.service.impl;
 
+import com.mobiquityinc.packagelibrary.exception.APIException;
 import com.mobiquityinc.packagelibrary.model.Item;
 import com.mobiquityinc.packagelibrary.model.Package;
 import com.mobiquityinc.packagelibrary.service.Transform;
@@ -27,12 +28,15 @@ public class PackageTransform  implements Transform {
     @Value("${constraints.maxCostItem}")
     private String maxCostItem;
     
+    @Value("${constraints.maxOfItemsPerPackage}")
+    private String maxOfItemsPerPackage;
+    
     /**
      * @param fileLines
      * @return
      */
     @Override
-    public Package transformLineFileToPackage(String fileLines){
+    public Package transformLineFileToPackage(String fileLines) throws APIException {
         
         List<String> itemsOfline = new ArrayList<String>();
         for (String field : fileLines.split(" ")){
@@ -77,6 +81,10 @@ public class PackageTransform  implements Transform {
         }
         
         temporalPackage.setItem(temporalItems);
+        
+        if ((temporalPackage.getItem().size() > Integer.parseInt(this.maxOfItemsPerPackage))){
+            throw new APIException("number of items exceed the maximum, please check", new Exception());
+        }
         
         return temporalPackage;
     }
