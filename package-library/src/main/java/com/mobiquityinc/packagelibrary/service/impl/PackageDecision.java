@@ -8,11 +8,21 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Diego Aguirre
+ * @since 03/10/2019
+ *
+ * Service that has de domain for the decisions
+ */
 @Service
 public class PackageDecision implements Decision {
     
     private List<PackageCombination> packageCombinations;
     
+    /**
+     * @param aPackage
+     * @return
+     */
     @Override
     public String fillBestChoiceforPackages(Package aPackage){
         
@@ -51,7 +61,10 @@ public class PackageDecision implements Decision {
         return this.getIndexesOfBestChoice();
     }
     
-    
+    /**
+     * @param packageCombinationItem
+     * @param aPackage
+     */
     private void compareWithAllCombinations(PackageCombination packageCombinationItem, Package aPackage){
         
         if (packageCombinationItem.getSumWeight() < aPackage.getWightLimit()){
@@ -73,6 +86,9 @@ public class PackageDecision implements Decision {
         this.packageCombinations.add(packageCombinationItem);
     }
     
+    /**
+     * @return
+     */
     private String getIndexesOfBestChoice(){
         
         String indexesRsult = "-";

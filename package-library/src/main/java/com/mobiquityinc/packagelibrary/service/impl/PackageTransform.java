@@ -9,6 +9,12 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Diego Aguirre
+ * @since 03/10/2019
+ *
+ * Service that has de domain transformation of packages
+ */
 @Service
 public class PackageTransform  implements Transform {
     
@@ -21,6 +27,10 @@ public class PackageTransform  implements Transform {
     @Value("${constraints.maxCostItem}")
     private String maxCostItem;
     
+    /**
+     * @param fileLines
+     * @return
+     */
     @Override
     public Package transformLineFileToPackage(String fileLines){
         

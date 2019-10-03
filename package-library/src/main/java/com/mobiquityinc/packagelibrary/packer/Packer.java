@@ -11,6 +11,12 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Diego Aguirre
+ * @since 03/10/2019
+ *
+ * Centralized service that call necesary methods for packer logic
+ */
 @Service
 public class Packer {
     
@@ -25,6 +31,11 @@ public class Packer {
     
     private List<Package> packages = new ArrayList<Package>();
     
+    /**
+     * @param filePath
+     * @return
+     * @throws APIException
+     */
     public String pack(String filePath) throws APIException {
     
         List<String> fileLines = this.txtFile.getLFileLines(filePath);
