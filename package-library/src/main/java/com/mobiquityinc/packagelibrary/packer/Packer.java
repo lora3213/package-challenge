@@ -45,7 +45,6 @@ public class Packer {
         }
         
         for (Package aPackage : this.packages){
-            
             if (!Optional.ofNullable(aPackage.getBestChoice()).isPresent()){
                 aPackage.setBestChoice(this.packageDecision.fillBestChoiceforPackages(aPackage));
             }
