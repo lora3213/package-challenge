@@ -49,7 +49,7 @@ public class PackageTransform  implements Transform {
         temporalPackage.setWightLimit(Double.parseDouble(itemsOfline.get(0)));
         
         if (temporalPackage.getWightLimit() > Double.parseDouble(maxWeightPackage)){
-            temporalPackage.setBestChoice(Character.IDENTIFIER_OF_NOT_ITEM_FOUND.getValue());
+            throw new APIException(ErrorCode.WEIGHT_PACKAGE_EXCEED_LIMIT.getValue(), new Exception());
         }
         
         itemsOfline.remove(0);

@@ -1,8 +1,6 @@
 package com.mobiquityinc.packagelibrary.model;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
@@ -16,6 +14,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@EqualsAndHashCode
 public class Item implements Serializable {
     
     private static final long serialVersionUID = 1L;

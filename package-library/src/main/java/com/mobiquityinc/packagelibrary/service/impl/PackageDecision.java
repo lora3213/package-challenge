@@ -94,16 +94,14 @@ public class PackageDecision implements Decision {
         
         for (int idx = 0; idx < aPackage.getItem().size(); idx ++){
             for (int idy = idx + 1 ; idy < aPackage.getItem().size(); idy++){
-                if (idx == idy){
-                    break;
-                } else if (aPackage.getItem().get(idx).getCost() == aPackage.getItem().get(idy).getCost()){
+                if (aPackage.getItem().get(idx).getCost() == aPackage.getItem().get(idy).getCost()){
                     if (aPackage.getItem().get(idx).getWeight() > aPackage.getItem().get(idy).getWeight()){
                         aPackage.getItem().remove(idx);
+                        idx = 0;
                     } else {
                         aPackage.getItem().remove(idy);
+                        idy = 0;
                     }
-                    idx = 0;
-                    idy = 0;
                 }
             }
         }
