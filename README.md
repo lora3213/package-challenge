@@ -8,6 +8,7 @@ best practices, please see through the code and the commentaries
 
 * Java 8
 * Spring Boot 2
+* Junit
 * Lombok
 * Maven
 
