@@ -29,6 +29,8 @@ public class PackageDecision implements Decision {
             return Character.IDENTIFIER_OF_NOT_ITEM_FOUND.getValue();
         }
         
+        aPackage = this.discardElementsWithSameCost(aPackage);
+        
         boolean haveBestChoice = false;
         
         while (!haveBestChoice){
@@ -113,9 +115,14 @@ public class PackageDecision implements Decision {
         
         String indexesRsult = "";
         
-        for (Item item : aPackage.getItem()){
-                indexesRsult = indexesRsult + item.getIndex() + Character.ITEM_SEPARATOR.getValue();
+        for (int idx= 0; idx < aPackage.getItem().size(); idx++){
+            
+            if (idx == aPackage.getItem().size() -1){
+                indexesRsult = indexesRsult + aPackage.getItem().get(idx).getIndex();
+            }else {
+                indexesRsult = indexesRsult + aPackage.getItem().get(idx).getIndex() + Character.ITEM_SEPARATOR.getValue();
             }
+        }
         return indexesRsult;
     }
 }
