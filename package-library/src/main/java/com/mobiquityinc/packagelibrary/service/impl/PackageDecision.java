@@ -65,6 +65,29 @@ public class PackageDecision implements Decision {
      * @param aPackage
      * @return
      */
+    private Package discardLowAverageCostItems(Package aPackage){
+        
+        double averageCost = 0.0;
+    
+        for (Item item : aPackage.getItem()){
+            averageCost = averageCost + item.getCost();
+        }
+        
+        averageCost = averageCost / aPackage.getItem().size();
+    
+        for (int idx = 0; idx < aPackage.getItem().size(); idx++){
+            if (aPackage.getItem().get(idx).getCost() < averageCost){
+                aPackage.getItem().remove(idx);
+                idx = 0;
+            }
+        }
+        return aPackage;
+    }
+    
+    /**
+     * @param aPackage
+     * @return
+     */
     private Package discardElementsWithSameCost(Package aPackage){
         
         for (int idx = 0; idx < aPackage.getItem().size(); idx ++){
@@ -80,29 +103,6 @@ public class PackageDecision implements Decision {
                     idx = 0;
                     idy = 0;
                 }
-            }
-        }
-        return aPackage;
-    }
-    
-    /**
-     * @param aPackage
-     * @return
-     */
-    private Package discardLowAverageCostItems(Package aPackage){
-        
-        double averageCost = 0.0;
-    
-        for (Item item : aPackage.getItem()){
-            averageCost = averageCost + item.getCost();
-        }
-        
-        averageCost = averageCost / aPackage.getItem().size();
-    
-        for (int idx = 0; idx < aPackage.getItem().size(); idx++){
-            if (aPackage.getItem().get(idx).getCost() < averageCost){
-                aPackage.getItem().remove(idx);
-                idx = 0;
             }
         }
         return aPackage;

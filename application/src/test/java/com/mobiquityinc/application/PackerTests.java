@@ -30,7 +30,7 @@ public class PackerTests {
         ApplicationContext context = SpringApplication.run(Application.class);
         this.service = (Packer) context.getBean("packer");
         this.filePath = "C:\\GitHub-lora3213\\package-challenge\\application\\src\\test\\resources\\test-file-test1.txt";
-        this.resultExpected = "4\n-\n2,3,4\n8,9\n";
+        this.resultExpected = "4\n-\n2\n8,9\n";
     }
     
     @Test
