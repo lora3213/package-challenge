@@ -6,7 +6,6 @@ import com.mobiquityinc.packagelibrary.model.Package;
 import com.mobiquityinc.packagelibrary.service.Decision;
 import org.springframework.stereotype.Service;
 
-
 /**
  * @author Diego Aguirre
  * @since 03/10/2019
@@ -51,7 +50,8 @@ public class PackageDecision implements Decision {
      * @param aPackage
      * @return
      */
-    private Package discardMostWeightItems(Package aPackage){
+    @Override
+    public Package discardMostWeightItems(Package aPackage){
         for (int idx = 0; idx < aPackage.getItem().size(); idx++){
             if (aPackage.getItem().get(idx).getWeight() > aPackage.getWightLimit()){
                 aPackage.getItem().remove(idx);
@@ -65,7 +65,8 @@ public class PackageDecision implements Decision {
      * @param aPackage
      * @return
      */
-    private Package discardLowAverageCostItems(Package aPackage){
+    @Override
+    public Package discardLowAverageCostItems(Package aPackage){
         
         double averageCost = 0.0;
     
@@ -88,7 +89,8 @@ public class PackageDecision implements Decision {
      * @param aPackage
      * @return
      */
-    private Package discardElementsWithSameCost(Package aPackage){
+    @Override
+    public Package discardElementsWithSameCost(Package aPackage){
         
         for (int idx = 0; idx < aPackage.getItem().size(); idx ++){
             for (int idy = idx + 1 ; idy < aPackage.getItem().size(); idy++){
@@ -111,7 +113,8 @@ public class PackageDecision implements Decision {
     /**
      * @return
      */
-    private String getIndexesOfBestChoice(Package aPackage){
+    @Override
+    public String getIndexesOfBestChoice(Package aPackage){
         
         String indexesRsult = "";
         

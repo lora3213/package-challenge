@@ -16,4 +16,29 @@ public interface Decision {
      */
     String fillBestChoiceforPackages(Package aPackage);
     
+    /**
+     * @param aPackage
+     * @return
+     */
+    Package discardMostWeightItems(Package aPackage);
+    
+    /**
+     *
+     * @param aPackage
+     * @return
+     */
+    Package discardLowAverageCostItems(Package aPackage);
+    
+    /**
+     * @param aPackage
+     * @return
+     */
+    Package discardElementsWithSameCost(Package aPackage);
+    
+    /**
+     * @param aPackage
+     * @return
+     */
+    String getIndexesOfBestChoice(Package aPackage);
+    
 }

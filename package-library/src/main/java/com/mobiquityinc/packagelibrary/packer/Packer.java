@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Diego Aguirre
@@ -47,7 +46,7 @@ public class Packer {
         }
         
         for (Package aPackage : packages){
-                aPackage.setBestChoice(packageDecision.fillBestChoiceforPackages(aPackage));
+            aPackage.setBestChoice(packageDecision.fillBestChoiceforPackages(aPackage));
         }
         
         String concatResults = "";
