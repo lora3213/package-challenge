@@ -47,9 +47,7 @@ public class Packer {
         }
         
         for (Package aPackage : packages){
-            if (!Optional.ofNullable(aPackage.getBestChoice()).isPresent()){
                 aPackage.setBestChoice(packageDecision.fillBestChoiceforPackages(aPackage));
-            }
         }
         
         String concatResults = "";

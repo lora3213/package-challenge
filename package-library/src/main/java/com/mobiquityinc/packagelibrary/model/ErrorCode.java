@@ -9,7 +9,9 @@ package com.mobiquityinc.packagelibrary.model;
 public enum ErrorCode {
 
     FILE_NOT_FOUND("EC-01 - File not found"),
-    NUMBER_OF_ITEMS_EXCEED("EC-02 - Number of items exceed the maximum");
+    NUMBER_OF_ITEMS_EXCEED("EC-02 - Number of items exceed the maximum"),
+    COST_EXCEED_LIMIT("EC-03 - Cost of one of the items exceed the limit"),
+    WEIGHT_EXCEED_LIMIT("EC-04 - weight of one of the items exceed the limit");
 
     private final String value;
 

@@ -68,13 +68,13 @@ public class PackageTransform  implements Transform {
                     field = field.replace(Character.EURO_CURRENCY.getValue(),"");
                     double cost = Double.parseDouble(field);
                     if (cost > Double.parseDouble(maxCostItem)){
-                        temporalPackage.setBestChoice(Character.IDENTIFIER_OF_NOT_ITEM_FOUND.getValue());
+                        throw new APIException(ErrorCode.COST_EXCEED_LIMIT.getValue(), new Exception());
                     }
                     itemPackage.setCost(cost);
                 } else {
                     double weight = Double.parseDouble(field);
                     if (weight > Double.parseDouble(maxWeightItem)){
-                        temporalPackage.setBestChoice(Character.IDENTIFIER_OF_NOT_ITEM_FOUND.getValue());
+                        throw new APIException(ErrorCode.WEIGHT_EXCEED_LIMIT.getValue(), new Exception());
                     }
                     itemPackage.setWeight(weight);
                 }
