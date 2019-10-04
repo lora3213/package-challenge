@@ -1,13 +1,11 @@
 package com.mobiquityinc.packagelibrary.service.impl;
 
 import com.mobiquityinc.packagelibrary.model.Character;
+import com.mobiquityinc.packagelibrary.model.Item;
 import com.mobiquityinc.packagelibrary.model.Package;
-import com.mobiquityinc.packagelibrary.model.ItemCombination;
 import com.mobiquityinc.packagelibrary.service.Decision;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Diego Aguirre
@@ -18,9 +16,6 @@ import java.util.List;
 @Service
 public class PackageDecision implements Decision {
     
-    private List<ItemCombination> itemCombinations;
-    
-    
     /**
      * @param aPackage
      * @return
@@ -28,74 +23,99 @@ public class PackageDecision implements Decision {
     @Override
     public String fillBestChoiceforPackages(Package aPackage){
         
-        itemCombinations = new ArrayList<ItemCombination>();
+        aPackage = this.discardMostWeightItems(aPackage);
         
-        for (int idx=0; idx < aPackage.getItem().size(); idx++){
-            ItemCombination singleCombination = new ItemCombination();
-            singleCombination.setIndexes(aPackage.getItem().get(idx).getIndex() + "");
-            singleCombination.setSumWeight(aPackage.getItem().get(idx).getWeight());
-            singleCombination.setSumCost(aPackage.getItem().get(idx).getCost());
-            this.getBestChoiceInAllCombinations(singleCombination, aPackage);
+        if (aPackage.getItem().size() == 0){
+            return Character.IDENTIFIER_OF_NOT_ITEM_FOUND.getValue();
+        }
+        
+        boolean haveBestChoice = false;
+        
+        while (!haveBestChoice){
+            aPackage = this.discardLowAverageCostItems(aPackage);
+            double sumOfWeights = 0.0;
+            for (Item item :  aPackage.getItem()){
+                sumOfWeights = sumOfWeights + item.getWeight();
+            }
             
-            for (int idy= idx + 1; idy < aPackage.getItem().size() ;idy++){
-                int previousItemCombination = itemCombinations.size() -1;
-                ItemCombination itemCombination = new ItemCombination();
-                
-                String sumOfIndexes = itemCombinations.get(previousItemCombination).getIndexes() +
-                        Character.ITEM_SEPARATOR.getValue() + aPackage.getItem().get(idy).getIndex();
-                double sumOfWeights = itemCombinations.get(previousItemCombination).getSumWeight() +
-                        aPackage.getItem().get(idy).getWeight();
-                double sumOfCosts = itemCombinations.get(previousItemCombination).getSumCost() +
-                        aPackage.getItem().get(idx).getCost();
-    
-                itemCombination.setIndexes(sumOfIndexes);
-                itemCombination.setSumWeight(sumOfWeights);
-                itemCombination.setSumCost(sumOfCosts);
-    
-                this.getBestChoiceInAllCombinations(itemCombination, aPackage);
+            if (sumOfWeights <= aPackage.getWightLimit()){
+                haveBestChoice = true;
             }
         }
-        return this.getIndexesOfBestChoice();
+        return this.getIndexesOfBestChoice(aPackage);
     }
     
     /**
-     * @param itemCombinationEvaluate
      * @param aPackage
+     * @return
      */
-    private void getBestChoiceInAllCombinations(ItemCombination itemCombinationEvaluate, Package aPackage){
-        
-        if (itemCombinationEvaluate.getSumWeight() < aPackage.getWightLimit()){
-            if (this.itemCombinations.size() == 0){
-                itemCombinationEvaluate.setBestChoice(true);
+    private Package discardMostWeightItems(Package aPackage){
+        for (int idx = 0; idx < aPackage.getItem().size(); idx++){
+            if (aPackage.getItem().get(idx).getWeight() > aPackage.getWightLimit()){
+                aPackage.getItem().remove(idx);
+                idx = 0;
             }
-        } else {
-            itemCombinationEvaluate.setBestChoice(false);
         }
+        return aPackage;
+    }
+    
+    /**
+     * @param aPackage
+     * @return
+     */
+    private Package discardElementsWithSameCost(Package aPackage){
         
-        if (itemCombinationEvaluate.getSumWeight() < aPackage.getWightLimit() && this.itemCombinations.size() > 0){
-            for (int idx = 0; idx < this.itemCombinations.size(); idx++) {
-                if (itemCombinationEvaluate.getSumCost() > this.itemCombinations.get(idx).getSumCost()){
-                    itemCombinationEvaluate.setBestChoice(true);
-                    this.itemCombinations.get(idx).setBestChoice(false);
+        for (int idx = 0; idx < aPackage.getItem().size(); idx ++){
+            for (int idy = idx + 1 ; idy < aPackage.getItem().size(); idy++){
+                if (idx == idy){
+                    break;
+                } else if (aPackage.getItem().get(idx).getCost() == aPackage.getItem().get(idy).getCost()){
+                    if (aPackage.getItem().get(idx).getWeight() > aPackage.getItem().get(idy).getWeight()){
+                        aPackage.getItem().remove(idx);
+                    } else {
+                        aPackage.getItem().remove(idy);
+                    }
+                    idx = 0;
+                    idy = 0;
                 }
             }
         }
-        this.itemCombinations.add(itemCombinationEvaluate);
+        return aPackage;
+    }
+    
+    /**
+     * @param aPackage
+     * @return
+     */
+    private Package discardLowAverageCostItems(Package aPackage){
+        
+        double averageCost = 0.0;
+    
+        for (Item item : aPackage.getItem()){
+            averageCost = averageCost + item.getCost();
+        }
+        
+        averageCost = averageCost / aPackage.getItem().size();
+    
+        for (int idx = 0; idx < aPackage.getItem().size(); idx++){
+            if (aPackage.getItem().get(idx).getCost() < averageCost){
+                aPackage.getItem().remove(idx);
+                idx = 0;
+            }
+        }
+        return aPackage;
     }
     
     /**
      * @return
      */
-    private String getIndexesOfBestChoice(){
+    private String getIndexesOfBestChoice(Package aPackage){
         
-        String indexesRsult = Character.IDENTIFIER_OF_NOT_ITEM_FOUND.getValue();
+        String indexesRsult = "";
         
-        for (ItemCombination itemCombinationItem : this.itemCombinations){
-            if (itemCombinationItem.isBestChoice()){
-                indexesRsult = itemCombinationItem.getIndexes();
-                break;
+        for (Item item : aPackage.getItem()){
+                indexesRsult = indexesRsult + item.getIndex() + Character.ITEM_SEPARATOR.getValue();
             }
-        }
         return indexesRsult;
     }
 }
