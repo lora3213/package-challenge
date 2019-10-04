@@ -21,37 +21,39 @@ import java.util.Optional;
 @Service
 public class Packer {
     
-    @Autowired
-    private File txtFile;
+    private static File txtFile;
+    private static Transform packageTransform;
+    private static Decision packageDecision;
     
     @Autowired
-    private Transform packageTransform;
-    
-    @Autowired
-    private Decision packageDecision;
-    
-    private List<Package> packages = new ArrayList<Package>();
-    
+    public Packer(File txtFile, Transform packageTransform, Decision packageDecision){
+        Packer.txtFile = txtFile;
+        Packer.packageTransform = packageTransform;
+        Packer.packageDecision = packageDecision;
+    }
+
     /**
      * @param filePath
      * @return
      * @throws APIException
      */
-    public String pack(String filePath) throws APIException {
+    public static String pack(String filePath) throws APIException {
     
-        List<String> fileLines = this.txtFile.getLFileLines(filePath);
+        List<Package> packages = new ArrayList<Package>();
+    
+        List<String> fileLines = txtFile.getLFileLines(filePath);
         for (String line : fileLines){
-            this.packages.add(this.packageTransform.transformLineFileToPackage(line));
+            packages.add(packageTransform.transformLineFileToPackage(line));
         }
         
-        for (Package aPackage : this.packages){
+        for (Package aPackage : packages){
             if (!Optional.ofNullable(aPackage.getBestChoice()).isPresent()){
-                aPackage.setBestChoice(this.packageDecision.fillBestChoiceforPackages(aPackage));
+                aPackage.setBestChoice(packageDecision.fillBestChoiceforPackages(aPackage));
             }
         }
         
         String concatResults = "";
-        for (Package aPackage : this.packages){
+        for (Package aPackage : packages){
             concatResults = concatResults + aPackage.getBestChoice() + "\n";
         }
         

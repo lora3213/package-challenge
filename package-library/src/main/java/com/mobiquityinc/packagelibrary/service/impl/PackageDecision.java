@@ -120,7 +120,8 @@ public class PackageDecision implements Decision {
             if (idx == aPackage.getItem().size() -1){
                 indexesRsult = indexesRsult + aPackage.getItem().get(idx).getIndex();
             }else {
-                indexesRsult = indexesRsult + aPackage.getItem().get(idx).getIndex() + Character.ITEM_SEPARATOR.getValue();
+                indexesRsult = indexesRsult + aPackage.getItem().get(idx).getIndex()
+                        + Character.ITEM_SEPARATOR.getValue();
             }
         }
         return indexesRsult;
