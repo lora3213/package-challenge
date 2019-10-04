@@ -24,6 +24,9 @@ public class Packer {
     private static Transform packageTransform;
     private static Decision packageDecision;
     
+    private Packer(){
+    }
+    
     @Autowired
     public Packer(File txtFile, Transform packageTransform, Decision packageDecision){
         Packer.txtFile = txtFile;
